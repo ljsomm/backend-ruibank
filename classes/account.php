@@ -2,6 +2,8 @@
 
 class Account{
     private $id;
+    private $cpf;
+    private $senha;
     private $saldo;
 
     public function __construct($id){

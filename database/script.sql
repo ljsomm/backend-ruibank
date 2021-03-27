@@ -3,6 +3,8 @@ USE db_ruibank;
 
 CREATE TABLE tb_conta(
 cd_conta INT NOT NULL,
+cd_cpf VARCHAR(11),
+cd_senha VARCHAR(150),
 vl_saldo DECIMAL(10,2),
 CONSTRAINT pk_conta
 	PRIMARY KEY (cd_conta)
