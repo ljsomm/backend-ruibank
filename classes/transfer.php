@@ -24,6 +24,4 @@ class Transfer{
     public function setDestino($destino){
         $this->destino = $destino;
     }
-
-
 }
