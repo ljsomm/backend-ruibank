@@ -6,7 +6,7 @@ class Transfer{
     private $destino;
 
     public function __construct(){
-
+        
     }
 
     public function getOrigem(){
@@ -25,5 +25,5 @@ class Transfer{
         $this->destino = $destino;
     }
 
-    
+
 }
