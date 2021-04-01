@@ -1,6 +1,7 @@
 <?php
 
 class Account{
+    private $id;
     private $cpf;
     private $senha;
     private $saldo;
@@ -79,11 +80,19 @@ class Account{
         $sel = $conn->prepare("SELECT cd_conta FROM tb_conta WHERE cd_cpf = :cpf");
         $sel->bindValue(":cpf", $this->cpf);
         if($sel->execute()){
-            return $sel->fetchColumn();
+            return $this->id = $sel->fetchColumn();
         }
         else{
             return false;
         }
+    }
+
+    public function saque(){
+        //
+    }
+
+    public function deposito(){
+        //
     }
 
 }

@@ -4,21 +4,23 @@ class Transfer{
     private $hash;
     private $origem;
     private $destino;
+    private $valor;
 
     public function __construct(){
         $p = func_get_args();
         $q = func_num_args();
         switch($q){
-            case 3:
-                    $this->__construct3($p);
+            case 4:
+                    $this->__construct4($p);
                     break;
         }
     }
 
-    public function __construct3($args){
+    public function __construct4($args){
         $this->origem = $args[0];
         $this->destino = $args[1];
         $this->hash = md5($args[2] . $this->lastHash());
+        $this->valor = $args[3];
     }
 
     public function getHash(){
@@ -45,13 +47,22 @@ class Transfer{
         $this->destino = $destino;
     }
 
+    public function getValor(){
+        return $this->destino;
+     }
+ 
+     public function setValor($valor){
+         $this->valor = $valor;
+     }
+
     public function transferencia(){
         require "../database/connection/conn.php";
-        $q = $conn->prepare("INSERT INTO tb_transacao (cd_transacao, cd_hash, cd_conta_origem, cd_conta_destino) VALUES (:i, :h, :o, :d)");
+        $q = $conn->prepare("INSERT INTO tb_transacao (cd_transacao, cd_hash, cd_conta_origem, cd_conta_destino, vl_transferencia) VALUES (:i, :h, :o, :d, :v)");
         $q->bindValue(":i", $this->lastId() + 1);
         $q->bindValue(":h", $this->hash);
-        $q->bindValue(":o", $this->origem);
-        $q->bindValue(":d", $this->destino);
+        $q->bindValue(":o", $this->origem->retornaId());
+        $q->bindValue(":d", $this->destino->retornaId());
+        $q->bindValue(":v", $this->valor);
         if($q->execute()){
             return true;
         }

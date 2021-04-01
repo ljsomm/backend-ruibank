@@ -16,6 +16,7 @@ cd_hash VARCHAR(32),
 cd_conta_origem INT NOT NULL,
 cd_conta_destino INT NOT NULL,
 dt_transferencia TIMESTAMP,
+vl_transferencia DECIMAL(10,2),
 CONSTRAINT pk_transacao
 	PRIMARY KEY(cd_transacao),
 CONSTRAINT uk_transacao
@@ -27,3 +28,4 @@ CONSTRAINT fk_transacao_destino
 	FOREIGN KEY(cd_conta_destino)
 		REFERENCES tb_conta(cd_conta)
 );
+
