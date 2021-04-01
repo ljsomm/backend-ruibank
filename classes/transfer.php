@@ -18,7 +18,7 @@ class Transfer{
     public function __construct3($args){
         $this->origem = $args[0];
         $this->destino = $args[1];
-        $this->hash = md5($args[2]);
+        $this->hash = md5($args[2] . $this->lastHash());
     }
 
     public function getHash(){
@@ -26,7 +26,7 @@ class Transfer{
     }
 
     public function setHash($data){
-        $this->hash = md5($data);
+        $this->hash = md5($data . $this->lastHash());
     }
 
     public function getOrigem(){
@@ -47,7 +47,8 @@ class Transfer{
 
     public function transferencia(){
         require "../database/connection/conn.php";
-        $q = $conn->prepare("INSERT INTO tb_transacao (cd_transacao, cd_hash, cd_conta_origem, cd_conta_destino) VALUES (1, :h, :o, :d)");
+        $q = $conn->prepare("INSERT INTO tb_transacao (cd_transacao, cd_hash, cd_conta_origem, cd_conta_destino) VALUES (:i, :h, :o, :d)");
+        $q->bindValue(":i", $this->lastId() + 1);
         $q->bindValue(":h", $this->hash);
         $q->bindValue(":o", $this->origem);
         $q->bindValue(":d", $this->destino);
@@ -55,7 +56,22 @@ class Transfer{
             return true;
         }
         else{
-            return 0;
+            return false;
         }
+    }
+
+    public function lastId(){
+        require "../database/connection/conn.php";
+        $sel = $conn->prepare("SELECT COALESCE(MAX(cd_transacao), 0) FROM tb_transacao");
+        $sel->execute();
+        return $sel->fetchColumn();
+    }
+
+    public function lastHash(){
+        require "../database/connection/conn.php";
+        $sel = $conn->prepare("SELECT COALESCE(cd_hash, 0) FROM tb_transacao WHERE cd_transacao = :id");
+        $sel->bindValue(":id", $this->lastId());
+        $sel->execute();
+        return $sel->fetchColumn();
     }
 }
