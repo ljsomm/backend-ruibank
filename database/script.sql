@@ -12,11 +12,14 @@ CONSTRAINT pk_conta
 
 CREATE TABLE tb_transacao(
 cd_transacao INT NOT NULL,
+cd_hash VARCHAR(32),
 cd_conta_origem INT NOT NULL,
 cd_conta_destino INT NOT NULL,
 dt_transferencia TIMESTAMP,
 CONSTRAINT pk_transacao
 	PRIMARY KEY(cd_transacao),
+CONSTRAINT uk_transacao
+	UNIQUE(cd_hash),
 CONSTRAINT fk_transacao_origem
 	FOREIGN KEY(cd_conta_origem)
 		REFERENCES tb_conta(cd_conta),

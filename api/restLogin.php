@@ -8,4 +8,3 @@
         $_SESSION["cpf"] = $acc->getCPF();
         $_SESSION["senha"] = $acc->getSenha();
     }
-    
