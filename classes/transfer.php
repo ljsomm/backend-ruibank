@@ -56,7 +56,9 @@ class Transfer{
             return true;
         }
         else{
-            return false;
+            if($q->errorInfo()[1]){
+                return array(false, "Usuario nao existe existe");
+            }
         }
     }
 

@@ -1,14 +1,30 @@
 <?php
 
 class Account{
-    private $id;
     private $cpf;
     private $senha;
     private $saldo;
 
-    public function __construct($cpf, $senha){
-        $this->cpf = $cpf;
-        $this->senha = $senha;
+    public function __construct(){
+        $p = func_get_args();
+        $q = func_num_args();
+        switch($q){
+            case 1:
+                $this->__construct1($p);
+                break;
+            case 2:
+                    $this->__construct2($p);
+                    break;
+        }
+    }
+
+    public function __construct1($arr){
+        $this->cpf = $arr[0];
+    }
+
+    public function __construct2($arr){
+        $this->cpf = $arr[0];
+        $this->senha = $arr[1];
     }
 
     public function getCPF(){
@@ -52,6 +68,18 @@ class Account{
         $q->execute();
         if($q->fetchColumn()){
             return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public function retornaId(){
+        require "../database/connection/conn.php";
+        $sel = $conn->prepare("SELECT cd_conta FROM tb_conta WHERE cd_cpf = :cpf");
+        $sel->bindValue(":cpf", $this->cpf);
+        if($sel->execute()){
+            return $sel->fetchColumn();
         }
         else{
             return false;
