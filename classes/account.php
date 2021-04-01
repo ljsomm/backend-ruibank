@@ -87,12 +87,27 @@ class Account{
         }
     }
 
-    public function saque(){
-        //
+    public function retornaSaldo(){
+        require "../database/connection/conn.php";
+        $saldo = $conn->prepare("SELECT vl_saldo FROM tb_conta WHERE cd_cpf = :cpf");
+        $saldo->bindValue(":cpf", $this->cpf);
+        $saldo->execute();
+        return $saldo->fetchColumn();
     }
 
-    public function deposito(){
-        //
+    public function incSaldo($acr){
+        require "../database/connection/conn.php";
+        $upd = $conn->prepare("UPDATE tb_conta SET vl_saldo = :vl WHERE cd_cpf = :cpf");
+        $upd->bindValue(":vl", $this->retornaSaldo() + $acr);
+        $upd->bindValue(":cpf", $this->cpf);
+        return $upd->execute();
     }
 
+    public function decSaldo($dec){
+        require "../database/connection/conn.php";
+        $upd = $conn->prepare("UPDATE tb_conta SET vl_saldo = :vl WHERE cd_cpf = :cpf");
+        $upd->bindValue(":vl", $this->retornaSaldo() - $dec);
+        $upd->bindValue(":cpf", $this->cpf);
+        return $upd->execute();
+    }
 }

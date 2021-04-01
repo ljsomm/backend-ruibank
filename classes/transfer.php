@@ -63,7 +63,7 @@ class Transfer{
         $q->bindValue(":o", $this->origem->retornaId());
         $q->bindValue(":d", $this->destino->retornaId());
         $q->bindValue(":v", $this->valor);
-        if($q->execute()){
+        if($q->execute() && $this->origem->decSaldo($this->valor) && $this->destino->incSaldo($this->valor)){
             return true;
         }
         else{
