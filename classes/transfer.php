@@ -87,4 +87,11 @@ class Transfer{
         $sel->execute();
         return $sel->fetchColumn();
     }
+
+    public function retornaTodos(){
+        require "../database/connection/conn.php";
+        $sel = $conn->prepare("SELECT cd_hash as 'hash', cd_conta_origem as origem, cd_conta_destino as destino, vl_transferencia as valor, dt_transferencia as 'data' FROM tb_transacao");
+        $sel->execute();
+        return $sel->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
